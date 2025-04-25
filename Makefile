@@ -8,17 +8,17 @@
 NAME	= 42sh
 
 SRC	=	src/mysh.c\
-		src/my_str_to_word_array.c\
-		src/my_env.c\
-		src/my_exit.c\
-		src/my_getenv.c\
-		src/my_strcat.c\
+		src/lib/my_str_to_word_array.c\
+		src/builtin/my_env.c\
+		src/builtin/my_exit.c\
+		src/builtin/my_getenv.c\
+		src/lib/my_strcat.c\
 		src/my_split.c\
 		src/my_free.c\
-		src/my_cd.c\
-		src/my_setenv.c\
+		src/builtin/my_cd.c\
+		src/builtin/my_setenv.c\
 		src/my_clist.c\
-		src/my_strcpy.c\
+		src/lib/my_strcpy.c\
 		src/my_list_to_clist.c\
 		src/my_clist_get_value.c\
 		src/execute_commands.c\
@@ -26,13 +26,13 @@ SRC	=	src/mysh.c\
 		src/shell_loop.c\
 		src/my_print_dir.c\
 		src/my_commands.c\
-		src/my_strcmp.c\
+		src/lib/my_strcmp.c\
 		src/search_commands.c\
 		src/file_reader.c\
 		src/clist_delete.c\
-		src/my_unsetenv.c\
+		src/builtin/my_unsetenv.c\
 		src/my_stdfd.c\
-		src/my_strsplit.c\
+		src/lib/my_strsplit.c\
 		src/commands_scanner.c\
 		src/redirection.c\
 		src/my_42.c
@@ -43,7 +43,7 @@ CC	= gcc
 
 INCLUDE_DIR = include
 
-CFLAGS  = -I$(INCLUDE_DIR) -Wall -Wextra
+CFLAGS  = -I$(INCLUDE_DIR) -Wall -Wextra -lncurses
 
 LFLAGS	= -I include
 

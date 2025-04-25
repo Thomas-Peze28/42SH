@@ -20,6 +20,7 @@
     #include <fcntl.h>
     #include <dirent.h>
     #include <stdbool.h>
+    #include <ncurses.h>
 typedef struct pipes {
     int stdin[2];
     int stdout[2];
