@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME	= mysh
+NAME	= 42sh
 
 SRC	=	src/mysh.c\
 		src/my_str_to_word_array.c\
