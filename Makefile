@@ -35,7 +35,10 @@ SRC	=	src/mysh.c\
 		src/lib/my_strsplit.c\
 		src/commands_scanner.c\
 		src/redirection.c\
-		src/my_42.c
+		src/my_42.c \
+		src/init_ncurse.c \
+		src/ncurse.c \
+		src/eof.c \
 
 OBJ	= $(SRC:.c=.o)
 

@@ -11,6 +11,7 @@ void init_ncurses(void)
 {
     initscr();
     cbreak();
+    noecho();
+    scrollok(stdscr, TRUE);
     keypad(stdscr, TRUE);
-    curs_set(1);
 }

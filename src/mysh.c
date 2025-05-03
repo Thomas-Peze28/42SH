@@ -71,6 +71,9 @@ int main(int argc, char **argv, char **env)
 {
     myshell_t *shell = malloc(sizeof(myshell_t));
 
+    if (isatty(0) && isatty(1)) {
+        init_ncurses();
+    }
     argc = argc;
     argv[0][0] = argv[0][0];
     if (shell == NULL)
@@ -78,5 +81,6 @@ int main(int argc, char **argv, char **env)
     if (init_shell(shell, env) == 84)
         return free_struct(shell, 84);
     shell_loop(shell);
+    endwin();
     return free_struct(shell, shell->status);
 }

@@ -7,30 +7,6 @@
 
 #include "mysh.h"
 
-static void put_str_eof(myshell_t *shell, char *str)
-{
-    int buff_size = 0;
-    int new_str_size = my_strlen(str);
-    char *tmpbuffer = NULL;
-
-    if (shell->stdout != NULL){
-        buff_size = my_strlen(shell->stdout);
-        tmpbuffer = shell->stdout;
-    }
-    shell->stdout = malloc(buff_size + new_str_size + 1);
-    if (shell->stdout == NULL){
-        shell->stdout = tmpbuffer;
-        return;
-    }
-    if (tmpbuffer != NULL)
-        my_strcpy(shell->stdout, tmpbuffer);
-    if (tmpbuffer != NULL)
-        my_strcat(shell->stdout, str);
-    else
-        my_strcpy(shell->stdout, str);
-    free(tmpbuffer);
-}
-
 int is_stdin_non_empty(void)
 {
     struct stat st;
@@ -59,29 +35,6 @@ int getlines_sub(char **buffer, bool nline)
     if (size > 0 && nline == false)
         (*buffer)[size - 1] = '\0';
     return size;
-}
-
-void parse_eof(myshell_t *shell, char *eof)
-{
-    int reads = 0;
-    char *buffer = NULL;
-
-    free(shell->stdout);
-    shell->stdout = NULL;
-    if (eof == NULL)
-        return;
-    while (reads != -1){
-        if (isatty(0) && isatty(1))
-            write(1, "? ", 2);
-        reads = getlines_sub(&buffer, true);
-        if (reads == -1 || reads < 1)
-            continue;
-        if (is_good_eof(eof, buffer) == true)
-            break;
-        put_str_eof(shell, buffer);
-    }
-    if (reads > 0)
-        free(buffer);
 }
 
 int commands(myshell_t *shell)
@@ -149,9 +102,10 @@ static int handle_multiple(myshell_t *shell, char **splitted)
 static int shell_loop_iteration(myshell_t *shell, int l,
     int reads, char **split)
 {
-    if (isatty(0) && isatty(1))
-        print_current_dir(shell);
-    reads = getlines_sub(&shell->commands, false);
+    if (!isatty(0) || !isatty(1))
+        reads = getlines_sub(&shell->commands, false);
+    else
+        reads = get_line_ncurses(&shell->commands);
     if (reads == -1)
         return 0;
     if (reads < 2)

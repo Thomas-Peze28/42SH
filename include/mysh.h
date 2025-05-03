@@ -95,6 +95,7 @@ void parse_eof(myshell_t *shell, char *eof_param);
 int set_pipe_flg(myshell_t *shell, char **splitted, int i);
 bool is_good_eof(char *str1, char *str2);
 int my_42(myshell_t *shell);
-
-
+void init_ncurses(void);
+int get_line_ncurses(char **buffer);
+int getlines_sub(char **buffer, bool nline);
 #endif
