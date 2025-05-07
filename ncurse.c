@@ -71,6 +71,10 @@ char *execve_and_get_stdout(char *path, char **argv, char **envp)
     pid_t pid;
     char *output = NULL;
 
+    if (!isatty(0) || !isatty(1)) {
+        execve(path, argv, envp);
+        return NULL;
+    }
     if (create_pipe_and_fork(pipefd, &pid) == -1)
         return NULL;
     if (pid == 0)
@@ -84,10 +88,20 @@ char *execve_and_get_stdout(char *path, char **argv, char **envp)
 
 void printv(char *text, int status)
 {
-    if (!isatty(0) || !isatty(1))
+    if (!isatty(0) || !isatty(1)) {
         write(status, text, strlen(text));
-    else {
+    } else {
+        if (status == 2) {
+            attron(COLOR_PAIR(1));
+        }
+        if (status == 1) {
+            attron(COLOR_PAIR(2));
+        }
         printw("%s", text);
+        if (status == 2 || status == 1) {
+            attroff(COLOR_PAIR(1));
+            attroff(COLOR_PAIR(2));
+        }
         refresh();
     }
 }

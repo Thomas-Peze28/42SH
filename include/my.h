@@ -58,4 +58,6 @@ int get_line_ncurses(char **buffer);
 char *execve_and_get_stdout(char *path, char **argv, char **envp);
 void printv(char *text, int status);
 int my_which(char **warray, char **env);
+int print_42sh_ascii(void);
+int process_env_command(char **env, char **warray);
 #endif /* MY_H */

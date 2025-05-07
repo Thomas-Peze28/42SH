@@ -23,6 +23,8 @@ SRC	=	free.c \
 		redirection.c \
 		ncurse.c \
 		my_which.c \
+		easter.c \
+		builtins.c \
 
 MAIN	=	main.c
 OBJ	=	$(SRC:.c=.o)
