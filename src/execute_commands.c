@@ -50,7 +50,7 @@ static int run_child(myshell_t *shell, char **env, char *path, pipes_t pipes)
 {
     int res = -1;
 
-    if (shell->piped == true){
+    if (!(!isatty(0) || !isatty(1)) || shell->piped == true){
         dup2(pipes.stdout[1], STDOUT_FILENO);
     }
     close(pipes.stdout[1]);
@@ -93,6 +93,13 @@ static int run_parent(myshell_t *shell, int status)
     return (!(my_strcmp(shell->splitted[0], "chmod")));
 }
 
+static void print_stdout(myshell_t *shell)
+{
+    printw("%s", shell->stdout);
+    free(shell->stdout);
+    shell->stdout = false;
+}
+
 static int wait_child(myshell_t *shell, char **env, char *path, pipes_t *pipes)
 {
     int status;
@@ -100,12 +107,15 @@ static int wait_child(myshell_t *shell, char **env, char *path, pipes_t *pipes)
 
     my_free_list(env);
     free(path);
-    if (shell->piped == true){
+    if (!(!isatty(0) || !isatty(1)) || shell->piped == true){
         get_stdout(shell, pipes->stdout[0]);
         close(pipes->stdin[0]);
     } else {
         close(pipes->stdout[0]);
         close(pipes->stdin[0]);
+    }
+    if (!(!isatty(0) || !isatty(1)) && shell->piped == false){
+        print_stdout(shell);
     }
     finished = waitpid(shell->fork, &status, 0);
     if (finished == shell->fork){

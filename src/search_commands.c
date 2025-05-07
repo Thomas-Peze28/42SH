@@ -7,25 +7,20 @@
 
 #include "mysh.h"
 
-int is_binary_in_dir(char *str, char *path)
+char *get_full_path(char *str, char *path)
 {
-    struct dirent *entry;
-    DIR *dir = opendir(path);
+    char *fpath = malloc(strlen(path) + strlen(str) + 2);
 
-    if (dir == NULL)
-        return 0;
-    while (1){
-        entry = readdir(dir);
-        if (entry == NULL)
-            break;
-        if ((entry->d_type == 8) &&
-            !(my_strcmp(str, entry->d_name))) {
-            closedir(dir);
-            return 1;
-        }
-    }
-    closedir(dir);
-    return 0;
+    if (fpath == NULL)
+        return NULL;
+    my_strcpy(fpath, path);
+    my_strcat(fpath, "/");
+    my_strcat(fpath, str);
+    fpath[strlen(path) + strlen(str) + 1] = '\0';
+    if (access(fpath, X_OK) == 0)
+        return fpath;
+    free(fpath);
+    return NULL;
 }
 
 char **get_path_env(myshell_t *shell)
@@ -40,7 +35,7 @@ char **get_path_env(myshell_t *shell)
     return res;
 }
 
-char *extract_commands_path(myshell_t *shell)
+char *extract_commands_path(myshell_t *shell, char *commands)
 {
     char **PATH = get_path_env(shell);
     char *res = NULL;
@@ -48,16 +43,9 @@ char *extract_commands_path(myshell_t *shell)
     if (PATH == NULL)
         return NULL;
     for (int i = 0; PATH[i] != NULL; i++){
-        if (!(is_binary_in_dir(shell->splitted[0], PATH[i])))
-            continue;
-        res = malloc(sizeof(char) * (my_strlen(PATH[i]) +
-            my_strlen(shell->splitted[0]) + 2));
-        if (res != NULL){
-            my_strcpy(res, PATH[i]);
-            my_strcat(res, "/");
-            my_strcat(res, shell->splitted[0]);
+        res = get_full_path(commands, PATH[i]);
+        if (res != NULL)
             break;
-        }
     }
     my_free_list(PATH);
     return res;

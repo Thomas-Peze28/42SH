@@ -39,6 +39,7 @@ SRC	=	src/mysh.c\
 		src/init_ncurse.c \
 		src/ncurse.c \
 		src/eof.c \
+		src/builtin/my_which.c \
 
 OBJ	= $(SRC:.c=.o)
 

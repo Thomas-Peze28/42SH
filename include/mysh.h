@@ -76,7 +76,7 @@ int my_setenv_comm(myshell_t *shell);
 int my_strcmp(char const *s1, char const *s2);
 int my_strncmp(char const *s1, char const *s2, int n);
 int create_fork(myshell_t *shell, char *path);
-char *extract_commands_path(myshell_t *shell);
+char *extract_commands_path(myshell_t *shell, char *commands);
 char *get_specific_usr_home(char *user);
 int delete(env_t *tmp, char *name);
 int my_unsetenv(myshell_t *shell, char *name);
@@ -98,4 +98,7 @@ int my_42(myshell_t *shell);
 void init_ncurses(void);
 int get_line_ncurses(char **buffer);
 int getlines_sub(char **buffer, bool nline);
+char *get_full_path(char *str, char *path);
+int my_which(myshell_t *shell);
+
 #endif

@@ -22,7 +22,7 @@ int get_str_by_id(char **lst, char *str)
 int handle_builtins(myshell_t *shell, char **builtins)
 {
     int (*builtins_function[])(myshell_t *shell) = {my_exit,
-        my_env, my_cd, my_setenv_comm, my_unsetenv_comm, my_42};
+        my_env, my_cd, my_setenv_comm, my_unsetenv_comm, my_42, my_which};
     int id = get_str_by_id(builtins, shell->splitted[0]);
     int res = 0;
 
@@ -62,7 +62,7 @@ int handle_commands(myshell_t *shell, char **builtins)
 
     if (strlstcmp(builtins, shell->splitted[0]))
         return handle_builtins(shell, builtins);
-    path = extract_commands_path(shell);
+    path = extract_commands_path(shell, shell->splitted[0]);
     if (path != NULL)
         return create_fork(shell, path);
     free(path);

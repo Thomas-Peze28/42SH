@@ -27,7 +27,10 @@ static void build_env(char **env, char *env_str)
 
 static void write_env_str(char *env_str)
 {
-    write(1, env_str, my_strlen(env_str));
+    if (!isatty(0) || !isatty(1))
+        printf("%s", env_str);
+    else
+        printw("%s\n", env_str);
     free(env_str);
 }
 

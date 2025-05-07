@@ -40,7 +40,7 @@ int getlines_sub(char **buffer, bool nline)
 int commands(myshell_t *shell)
 {
     char *builtins[] = {"exit", "env", "cd", "setenv",
-        "unsetenv", "42", NULL};
+        "unsetenv", "42", "which", NULL};
     int res = 0;
 
     res = handle_commands(shell, builtins);
