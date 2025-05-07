@@ -1,74 +1,59 @@
 ##
-## EPITECH PROJECT, 2025
-## fozzbazz
+## EPITECH PROJECT, 2024
+## makefile for ## to_file
 ## File description:
-## Makefile
+## makefile for ## to_file
 ##
 
-NAME	= 42sh
+TEST	=	unit_tests
+NAME	=	mysh
+SRC	=	free.c \
+		func_cd.c \
+		func_env.c \
+		div_path.c \
+		search_command.c \
+		func_setenv_unsetenv.c \
+		change_dir.c \
+		handle_exit.c \
+		pipe_handling.c \
+		pip_utils.c \
+		check_empty_commands.c \
+		child_exec_process.c \
+		run_commands_pipe.c \
+		redirection.c \
+		ncurse.c \
+		my_which.c \
 
-SRC	=	src/mysh.c\
-		src/lib/my_str_to_word_array.c\
-		src/builtin/my_env.c\
-		src/builtin/my_exit.c\
-		src/builtin/my_getenv.c\
-		src/lib/my_strcat.c\
-		src/my_split.c\
-		src/my_free.c\
-		src/builtin/my_cd.c\
-		src/builtin/my_setenv.c\
-		src/my_clist.c\
-		src/lib/my_strcpy.c\
-		src/my_list_to_clist.c\
-		src/my_clist_get_value.c\
-		src/execute_commands.c\
-		src/my_clist_len.c\
-		src/shell_loop.c\
-		src/my_print_dir.c\
-		src/my_commands.c\
-		src/lib/my_strcmp.c\
-		src/search_commands.c\
-		src/file_reader.c\
-		src/clist_delete.c\
-		src/builtin/my_unsetenv.c\
-		src/my_stdfd.c\
-		src/lib/my_strsplit.c\
-		src/commands_scanner.c\
-		src/redirection.c\
-		src/my_42.c \
-		src/init_ncurse.c \
-		src/ncurse.c \
-		src/eof.c \
-		src/builtin/my_which.c \
+MAIN	=	main.c
+OBJ	=	$(SRC:.c=.o)
+MAIN_OBJ=	$(MAIN:.c=.o)
+CFLAGS	=	-Wall -Wextra -L$(LIB_DIR) -l:$(LIB_NAME).a -I./include -lncurses
+ILFLAGS	=	-I./lib
+LIB_DIR	=	lib
+LIB_NAME	=	libmy
+LIB_PATH	=	$(LIB_DIR)/lib$(LIB_NAME).a
 
-OBJ	= $(SRC:.c=.o)
+all: $(LIB_PATH) $(NAME)
 
-CC	= gcc
+$(NAME): $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
+	gcc -o $(NAME) $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
 
-INCLUDE_DIR = include
-
-CFLAGS  = -I$(INCLUDE_DIR) -Wall -Wextra -lncurses
-
-LFLAGS	= -I include
-
-all: $(NAME)
-
-$(NAME):	$(OBJ)
-	gcc -o $(NAME) $(OBJ) $(CFLAGS)
-
-debug:
-	$(CC) -c $(SRC) $(CFLAGS) -g
-	@mv $(notdir $(OBJ)) src
-	$(CC) -o $(NAME)_debug $(OBJ) $(CFLAGS) -g
+$(LIB_PATH):
+	$(MAKE) -C $(LIB_DIR)
 
 clean:
-	@rm -f $(OBJ)
+	$(MAKE) -C $(LIB_DIR) clean
+	rm -f $(OBJ) $(MAIN_OBJ)
+	rm -f *.gcno
+	rm -f *.gcda
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f $(NAME)_debug
+	$(MAKE) -C $(LIB_DIR) fclean
+	rm -f $(NAME)
+	rm -f $(TEST)
 
 re: fclean all
 
-run: all
-	./$(NAME)
+debug: $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
+	gcc -o $(NAME) -g $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
+	valgrind --leak-check=full --show-leak-kinds=all ./mysh

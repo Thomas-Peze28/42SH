@@ -1,0 +1,43 @@
+/*
+** EPITECH PROJECT, 2025
+** B-PSU-200-LIL-2-1-minishell2-etienne.pouille
+** File description:
+** handle_exit
+*/
+
+#include <stdlib.h>
+#include "my.h"
+#include "workspace.h"
+
+int is_exit(char *str)
+{
+    int i = 0;
+    int str_len = my_strlen(str);
+
+    while (str[i] == ' ' || str[i] == '\t')
+        i++;
+    if (i + 3 >= str_len || !(str[i] == 'e' && str[i + 1] == 'x'
+        && str[i + 2] == 'i' && str[i + 3] == 't'))
+        return 0;
+    i += 4;
+    while (str[i] != '\0') {
+        if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+            i++;
+        else
+            return 0;
+    }
+    return 1;
+}
+
+int handle_exit(char *line, char **warray, char ***env)
+{
+    for (int i = 0; warray[i] != NULL; i++) {
+        if (is_exit(warray[i])) {
+            free_all(0, line, warray);
+            printv("exit\n", 2);
+            free_env(*env);
+            exit(0);
+        }
+    }
+    return 0;
+}
