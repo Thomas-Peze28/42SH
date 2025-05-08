@@ -28,7 +28,7 @@ static void print_input_line(const char *input, int max_y)
     printw("%s", input);
 }
 
-static int handle_history_up(char *input,
+static void handle_history_up(char *input,
     int *pos, int *hist_idx, history_t *history)
 {
     int max_y;
@@ -41,10 +41,9 @@ static int handle_history_up(char *input,
     *pos = strlen(input);
     print_input_line(input, max_y);
     move(max_y - 1, 2 + *pos);
-    return 1;
 }
 
-static int handle_history_down(char *input,
+static void handle_history_down(char *input,
     int *pos, int *hist_idx, history_t *history)
 {
     int max_x;
@@ -62,7 +61,6 @@ static int handle_history_down(char *input,
         *pos = 0;
         print_input_line(input, max_y);
     }
-    return 1;
 }
 
 static int handle_backspace(char *input, int *pos, int max_y)
@@ -76,11 +74,11 @@ static int handle_backspace(char *input, int *pos, int max_y)
     return 1;
 }
 
-int handle_input_char(int ch, char *input, int *pos, int size)
+static int handle_input_char(int ch, char *input, int *pos, int size)
 {
     if (ch >= 32 && ch < 127 && *pos < size - 1) {
+        input[*pos] = ch;
         (*pos)++;
-        input[(*pos)] = ch;
         input[*pos] = '\0';
         printw("%c", ch);
         return 1;
@@ -88,14 +86,14 @@ int handle_input_char(int ch, char *input, int *pos, int size)
     return 0;
 }
 
-int handle_enter_key(char *input, int *pos)
+static int handle_enter_key(char *input, int *pos)
 {
     input[*pos] = '\0';
     printw("\n");
     return 0;
 }
 
-int process_key_event(char *input,
+static int process_key_event(char *input,
     int *pos, int *hist_idx, history_t *history)
 {
     int max[2];
@@ -104,18 +102,21 @@ int process_key_event(char *input,
     getmaxyx(stdscr, max[0], max[1]);
     if (ch == '\n' || ch == '\r')
         return handle_enter_key(input, pos);
-    if (ch == KEY_UP && history && history->count > 0)
-        return handle_history_up(input, pos, hist_idx, history);
-    if (ch == KEY_DOWN && history && history->count > 0)
-        return handle_history_down(input, pos, hist_idx, history);
-    if (ch == KEY_BACKSPACE || ch == 127 || ch == 8)
-        return handle_backspace(input, pos, max[0]);
-    if (handle_input_char(ch, input, pos, 1024))
+    if (ch == KEY_UP && history && history->count > 0) {
+        handle_history_up(input, pos, hist_idx, history);
         return 1;
-    return 0;
+    }
+    if (ch == KEY_DOWN && history && history->count > 0) {
+        handle_history_down(input, pos, hist_idx, history);
+        return 1;
+    }
+    if (ch == KEY_BACKSPACE || ch == 127 || ch == 8) {
+        handle_backspace(input, pos, max[0]);
+    }
+    return handle_input_char(ch, input, pos, 1024);
 }
 
-void setup_ncurses_input(int *max_y, int *max_x, char *input)
+static void setup_ncurses_input(int *max_y, int *max_x, char *input)
 {
     getmaxyx(stdscr, *max_y, *max_x);
     clear_and_print_prompt(*max_y);
