@@ -27,6 +27,7 @@ SRC	=	\
 		src/utils/free.c \
 		src/utils/search_command.c \
 		src/ncurse.c \
+		src/history/manage_history.c \
 
 MAIN	=	src/main.c
 OBJ	=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)
@@ -43,6 +44,7 @@ create_dirs:
 	@mkdir -p $(OBJ_DIR)/builtins
 	@mkdir -p $(OBJ_DIR)/pipe_n_redirect
 	@mkdir -p $(OBJ_DIR)/utils
+	@mkdir -p $(OBJ_DIR)/history
 
 $(NAME): $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
 	gcc -o $(NAME) $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)

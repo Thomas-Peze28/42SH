@@ -58,7 +58,8 @@ static int handle_input_error(char *line, char **warray)
     return -1;
 }
 
-static int process_command(char **warray_command, char ***env, int i)
+static int process_command(char **warray_command, char ***env,
+    int i, history_t *history)
 {
     int resultat = 0;
     char **warray = my_str_to_warray(warray_command[i], " \t\n");
@@ -71,53 +72,79 @@ static int process_command(char **warray_command, char ***env, int i)
     }
     resultat = execute_piped_commands(warray_command[i], env);
     if (resultat == -1) {
-        resultat = gest_comm(warray, env);
+        resultat = gest_comm(warray, env, history);
     }
     return free_all(resultat, NULL, warray);
 }
 
-static int process_iteration(char ***env)
+static char *get_line(history_t *history)
 {
     char *line = NULL;
-    char **warray_command = NULL;
     size_t len = 0;
     ssize_t read_line;
-    int result;
 
     if (!isatty(0) || !isatty(1))
         read_line = getline(&line, &len, stdin);
     else
         read_line = get_line_ncurses(&line);
     if (read_line == -1)
+        return NULL;
+    if (read_line > 1)
+        add_to_history(history, line);
+    return line;
+}
+
+static int process_iteration(char ***env, history_t *history)
+{
+    char *line = NULL;
+    char **warray_command = NULL;
+    int result;
+
+    line = get_line(history);
+    if (line == NULL)
         return handle_input_error(line, warray_command);
     warray_command = my_str_to_warray(line, ";");
     for (int i = 0; warray_command[i] != NULL; i++) {
-        result = process_command(warray_command, env, i);
+        result = process_command(warray_command, env, i, history);
         if (result == -1)
             return handle_input_error(line, warray_command);
     }
-    handle_exit(line, warray_command, env);
+    handle_exit(line, warray_command, env, history);
     return free_all(result, line, warray_command);
+}
+
+static int verify_env_history(char **env, history_t *history)
+{
+    if (!env || !history) {
+        if (env)
+            free_env(env);
+        if (history)
+            free_history(history);
+        return 1;
+    }
+    return 0;
 }
 
 int mysh(int result, char **env_original)
 {
     char **env = dup_env(env_original);
+    history_t *history = init_history(100);
 
-    if (!env)
+    if (verify_env_history(env, history))
         return 84;
     if (!isatty(STDIN_FILENO)) {
-        result = process_iteration(&env);
-        while (result != -1) {
-            result = process_iteration(&env);
-        }
+        result = process_iteration(&env, history);
+        while (result != -1)
+            result = process_iteration(&env, history);
         free_env(env);
+        free_history(history);
         return result == -1 ? 0 : result;
     }
     while (result != -1) {
-        result = process_iteration(&env);
+        result = process_iteration(&env, history);
     }
     free_env(env);
+    free_history(history);
     return result;
 }
 
