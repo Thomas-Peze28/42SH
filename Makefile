@@ -28,6 +28,9 @@ SRC	=	\
 		src/utils/search_command.c \
 		src/ncurse.c \
 		src/history/manage_history.c \
+		src/alias/manage_alias.c \
+    src/alias/alias_commands.c \
+		src/alias/free_aliases.c \
 		src/ncurse_keys.c \
 
 MAIN	=	src/main.c
@@ -53,6 +56,7 @@ create_dirs:
 	@mkdir -p $(OBJ_DIR)/pipe_n_redirect
 	@mkdir -p $(OBJ_DIR)/utils
 	@mkdir -p $(OBJ_DIR)/history
+	@mkdir -p $(OBJ_DIR)/alias
 
 $(NAME): $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
 	@echo -e "$(BLUE)[INFO] Edition des liens...$(NC)"
