@@ -62,6 +62,22 @@ static void print_ascii_art(const char **ascii, int lines)
         refresh();
 }
 
+static void print_credits(void)
+{
+    const char *credits[] = {
+        "  42sh - 2024",
+        "  EPITECH PROJECT",
+        "  Pierric Buchez",
+        "  Celestin Bailly",
+        "  Etienne Pouille",
+        "  Maximilien Lachevre-Leconte",
+        "  Thomas Peze",
+    };
+    int lines = sizeof(credits) / sizeof(credits[0]);
+
+    print_ascii_art(credits, lines);
+}
+
 int print_42sh_ascii(void)
 {
     static const char *ascii[] = {
@@ -78,5 +94,6 @@ int print_42sh_ascii(void)
     int lines = sizeof(ascii) / sizeof(ascii[0]);
 
     print_ascii_art(ascii, lines);
+    print_credits();
     return 0;
 }

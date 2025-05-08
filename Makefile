@@ -38,7 +38,14 @@ LIB_DIR	=	lib
 LIB_NAME	=	libmy
 LIB_PATH	=	$(LIB_DIR)/lib$(LIB_NAME).a
 
+GREEN	=	\033[0;32m
+YELLOW	=	\033[1;33m
+RED	=	\033[0;31m
+BLUE	=	\033[1;34m
+NC	=	\033[0m
+
 all: $(LIB_PATH) create_dirs $(NAME)
+	@echo -e "$(GREEN)[OK] Compilation terminée.$(NC)"
 
 create_dirs:
 	@mkdir -p $(OBJ_DIR)/builtins
@@ -47,21 +54,26 @@ create_dirs:
 	@mkdir -p $(OBJ_DIR)/history
 
 $(NAME): $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
+	@echo -e "$(BLUE)[INFO] Edition des liens...$(NC)"
 	gcc -o $(NAME) $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
 
 $(OBJ_DIR)/%.o: src/%.c
+	@echo -e "$(YELLOW)[COMP] $<$(NC)"
 	gcc $(CFLAGS) $(ILFLAGS) -c $< -o $@
 
 $(LIB_PATH):
+	@echo -e "$(BLUE)[INFO] Compilation de la librairie...$(NC)"
 	$(MAKE) -C $(LIB_DIR)
 
 clean:
+	@echo -e "$(RED)[CLEAN] Suppression des fichiers objets...$(NC)"
 	$(MAKE) -C $(LIB_DIR) clean
 	rm -rf $(OBJ_DIR)
 	rm -f *.gcno
 	rm -f *.gcda
 
 fclean: clean
+	@echo -e "$(RED)[FCLEAN] Suppression des binaires...$(NC)"
 	$(MAKE) -C $(LIB_DIR) fclean
 	rm -f $(NAME)
 	rm -f $(TEST)
@@ -69,5 +81,6 @@ fclean: clean
 re: fclean all
 
 debug: $(LIB_PATH) create_dirs $(OBJ) $(MAIN_OBJ)
+	@echo -e "$(BLUE)[DEBUG] Compilation avec debug...$(NC)"
 	gcc -o $(NAME) -g $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
 	valgrind --leak-check=full --show-leak-kinds=all ./mysh
