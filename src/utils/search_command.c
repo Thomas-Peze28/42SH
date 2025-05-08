@@ -35,7 +35,7 @@ static char *build_filepath(char *dir, char *cmd)
     return filepath;
 }
 
-static int check_status_code(int status)
+int check_status_code(int status)
 {
     if (status == 0)
         return 0;
@@ -63,7 +63,8 @@ static int fork_and_execute_comm(char *filepath, char **command, char **env)
     pid = fork();
     if (pid == 0) {
         buffer = execve_and_get_stdout(filepath, command, env);
-        printv(buffer, 1);
+        if (buffer)
+            printv(buffer, 1);
         exit(84);
     }
     waitpid(pid, &status, 0);

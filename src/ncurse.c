@@ -70,6 +70,7 @@ char *execve_and_get_stdout(char *path, char **argv, char **envp)
     int pipefd[2];
     pid_t pid;
     char *output = NULL;
+    int status = 0;
 
     if (!isatty(0) || !isatty(1)) {
         execve(path, argv, envp);
@@ -82,7 +83,8 @@ char *execve_and_get_stdout(char *path, char **argv, char **envp)
     close(pipefd[1]);
     output = read_from_pipe(pipefd[0]);
     close(pipefd[0]);
-    waitpid(pid, NULL, 0);
+    waitpid(pid, &status, 0);
+    check_status_code(status);
     return output;
 }
 

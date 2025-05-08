@@ -62,4 +62,5 @@ int print_42sh_ascii(void);
 int process_env_command(char **env, char **warray);
 int my_is_alphanum(const char *str);
 int read_input_ncurses(char *input, int size, history_t *history);
+int check_status_code(int status);
 #endif /* MY_H */
