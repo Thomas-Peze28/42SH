@@ -9,6 +9,7 @@
 #ifndef MY_H
     #define MY_H
     #include <stddef.h>
+    #include "workspace.h"
 
 typedef struct indices_s {
     int i;
@@ -53,11 +54,12 @@ int my_atoi(char *str);
 // Manage functions
 int no_int_overflow(int nb);
 
-int my_is_alphanum(char *str);
-int get_line_ncurses(char **buffer);
+int get_line_ncurses(char **buffer, history_t *history);
 char *execve_and_get_stdout(char *path, char **argv, char **envp);
 void printv(char *text, int status);
 int my_which(char **warray, char **env);
 int print_42sh_ascii(void);
 int process_env_command(char **env, char **warray);
+int my_is_alphanum(const char *str);
+int read_input_ncurses(char *input, int size, history_t *history);
 #endif /* MY_H */

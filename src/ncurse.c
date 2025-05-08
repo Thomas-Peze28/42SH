@@ -106,30 +106,7 @@ void printv(char *text, int status)
     }
 }
 
-static int read_input_ncurses(char *input, int size)
-{
-    int result = 0;
-    int max_y;
-    int max_x;
-
-    getmaxyx(stdscr, max_y, max_x);
-    move(max_y - 1, 0);
-    clrtoeol();
-    printv("> ", 1);
-    echo();
-    result = getnstr(input, size - 1);
-    noecho();
-    if (result == ERR) {
-        input[0] = '\0';
-        return -1;
-    }
-    if (input[0] == '\0') {
-        refresh();
-    }
-    return 0;
-}
-
-int get_line_ncurses(char **buffer)
+int get_line_ncurses(char **buffer, history_t *history)
 {
     const int NCURSES_MAX_INPUT = 1024;
     char input[NCURSES_MAX_INPUT];
@@ -140,7 +117,7 @@ int get_line_ncurses(char **buffer)
         free(*buffer);
         *buffer = NULL;
     }
-    if (read_input_ncurses(input, NCURSES_MAX_INPUT) == -1) {
+    if (read_input_ncurses(input, NCURSES_MAX_INPUT, history) == -1) {
         len = 0;
     } else {
         len = strlen(input);

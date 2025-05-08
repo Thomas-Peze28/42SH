@@ -86,7 +86,7 @@ static char *get_line(history_t *history)
     if (!isatty(0) || !isatty(1))
         read_line = getline(&line, &len, stdin);
     else
-        read_line = get_line_ncurses(&line);
+        read_line = get_line_ncurses(&line, history);
     if (read_line == -1)
         return NULL;
     if (read_line > 1)
@@ -160,6 +160,7 @@ void init_ncurses(void)
     noecho();
     scrollok(stdscr, TRUE);
     keypad(stdscr, TRUE);
+    print_42sh_ascii();
 }
 
 int main(int argc, char **argv, char **env)
