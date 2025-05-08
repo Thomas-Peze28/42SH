@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include "my.h"
 #include "workspace.h"
 
@@ -24,30 +25,7 @@ static void extract_name_command(char *arg, char **name, char **command)
     }
 }
 
-static int create_alias_from_args(char **warray, alias_t *aliases)
-{
-    char *name = warray[1];
-    char *command = NULL;
-    int cmd_len = 0;
-    int i;
-
-    for (i = 2; warray[i]; i++)
-        cmd_len += my_strlen(warray[i]) + 1;
-    command = malloc(cmd_len);
-    if (!command)
-        return 84;
-    command[0] = '\0';
-    for (i = 2; warray[i]; i++) {
-        if (i > 2)
-            my_strcat(command, " ");
-        my_strcat(command, warray[i]);
-    }
-    add_alias(aliases, name, command);
-    free(command);
-    return 0;
-}
-
-static int process_name_command_arg(char *arg, alias_t *aliases)
+int process_name_command_arg(char *arg, alias_t *aliases)
 {
     char *name = NULL;
     char *command = NULL;
@@ -61,7 +39,7 @@ static int process_name_command_arg(char *arg, alias_t *aliases)
     return -1;
 }
 
-static void display_single_alias(char *alias_name, alias_t *aliases)
+void display_single_alias(char *alias_name, alias_t *aliases)
 {
     char *command = get_alias_command(aliases, alias_name);
 
@@ -76,22 +54,6 @@ static void display_single_alias(char *alias_name, alias_t *aliases)
         printv(alias_name, 2);
         printv(" not found\n", 2);
     }
-}
-
-int handle_alias_command(char **warray, alias_t *aliases)
-{
-    if (!warray || !aliases)
-        return 84;
-    if (warray[1] == NULL) {
-        display_aliases(aliases);
-        return 0;
-    }
-    if (warray[1] && warray[2])
-        return create_alias_from_args(warray, aliases);
-    if (process_name_command_arg(warray[1], aliases) == 0)
-        return 0;
-    display_single_alias(warray[1], aliases);
-    return 0;
 }
 
 int handle_unalias_command(char **warray, alias_t *aliases)

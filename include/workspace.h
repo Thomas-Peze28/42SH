@@ -60,6 +60,9 @@ void free_aliases(alias_t *aliases);
 int handle_alias_command(char **warray, alias_t *aliases);
 int handle_unalias_command(char **warray, alias_t *aliases);
 char **substitute_aliases(char **warray, alias_t *aliases);
+int process_name_command_arg(char *arg, alias_t *aliases);
+int create_alias_from_args(char **warray, alias_t *aliases);
+void display_single_alias(char *alias_name, alias_t *aliases);
 
 history_t *init_history(int capacity);
 void add_to_history(history_t *history, char *command);

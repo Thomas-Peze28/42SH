@@ -31,6 +31,8 @@ SRC	=	\
 		src/alias/manage_alias.c \
         src/alias/alias_commands.c \
 		src/alias/free_aliases.c \
+		src/alias/create_alias.c \
+		src/alias/handle_alias.c \
 
 MAIN	=	src/main.c
 OBJ	=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)
