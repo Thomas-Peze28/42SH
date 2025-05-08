@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include "workspace.h"
 
 int free_all(int ret_code, char *line, char **warray)
 {
@@ -33,4 +34,14 @@ void free_divise_path(char **paths)
         }
         free(paths);
     }
+}
+
+void free_eha(char **env, history_t *history, alias_t *aliases)
+{
+    if (env)
+        free_env(env);
+    if (history)
+        free_history(history);
+    if (aliases)
+        free_aliases(aliases);
 }

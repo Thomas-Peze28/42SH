@@ -58,11 +58,11 @@ static int handle_input_error(char *line, char **warray)
     return -1;
 }
 
-static int process_command(char **warray_command, char ***env,
-    int i, history_t *history)
+static int process_command(char *warray_command, char ***env,
+    history_t *history, alias_t *aliases)
 {
     int resultat = 0;
-    char **warray = my_str_to_warray(warray_command[i], " \t\n");
+    char **warray = my_str_to_warray(warray_command, " \t\n");
 
     if (warray == NULL)
         return free_all(84, NULL, warray);
@@ -70,9 +70,10 @@ static int process_command(char **warray_command, char ***env,
         free_all(0, NULL, warray);
         return 0;
     }
-    resultat = execute_piped_commands(warray_command[i], env);
+    warray = substitute_aliases(warray, aliases);
+    resultat = execute_piped_commands(warray_command, env);
     if (resultat == -1) {
-        resultat = gest_comm(warray, env, history);
+        resultat = gest_comm(warray, env, history, aliases);
     }
     return free_all(resultat, NULL, warray);
 }
@@ -94,7 +95,7 @@ static char *get_line(history_t *history)
     return line;
 }
 
-static int process_iteration(char ***env, history_t *history)
+static int process_iteration(char ***env, history_t *history, alias_t *aliases)
 {
     char *line = NULL;
     char **warray_command = NULL;
@@ -105,21 +106,20 @@ static int process_iteration(char ***env, history_t *history)
         return handle_input_error(line, warray_command);
     warray_command = my_str_to_warray(line, ";");
     for (int i = 0; warray_command[i] != NULL; i++) {
-        result = process_command(warray_command, env, i, history);
+        result = process_command(warray_command[i], env, history, aliases);
         if (result == -1)
             return handle_input_error(line, warray_command);
     }
-    handle_exit(line, warray_command, env, history);
-    return free_all(result, line, warray_command);
+    free(line);
+    handle_exit(warray_command, env, history, aliases);
+    return free_all(result, NULL, warray_command);
 }
 
-static int verify_env_history(char **env, history_t *history)
+static int verify_env_history_alias(char **env,
+    history_t *history, alias_t *aliases)
 {
-    if (!env || !history) {
-        if (env)
-            free_env(env);
-        if (history)
-            free_history(history);
+    if (!env || !history || !aliases) {
+        free_eha(env, history, aliases);
         return 1;
     }
     return 0;
@@ -129,22 +129,21 @@ int mysh(int result, char **env_original)
 {
     char **env = dup_env(env_original);
     history_t *history = init_history(100);
+    alias_t *aliases = init_aliases(100);
 
-    if (verify_env_history(env, history))
+    if (verify_env_history_alias(env, history, aliases))
         return 84;
     if (!isatty(STDIN_FILENO)) {
-        result = process_iteration(&env, history);
+        result = process_iteration(&env, history, aliases);
         while (result != -1)
-            result = process_iteration(&env, history);
-        free_env(env);
-        free_history(history);
+            result = process_iteration(&env, history, aliases);
+        free_eha(env, history, aliases);
         return result == -1 ? 0 : result;
     }
     while (result != -1) {
-        result = process_iteration(&env, history);
+        result = process_iteration(&env, history, aliases);
     }
-    free_env(env);
-    free_history(history);
+    free_eha(env, history, aliases);
     return result;
 }
 
