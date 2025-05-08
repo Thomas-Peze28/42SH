@@ -90,8 +90,8 @@ void display_aliases(alias_t *aliases)
         return;
     for (int i = 0; i < aliases->count; i++) {
         printv(aliases->names[i], 1);
-        printv("='", 1);
+        printv("\t", 1);
         printv(aliases->commands[i], 1);
-        printv("'\n", 1);
+        printv("\n", 1);
     }
 }

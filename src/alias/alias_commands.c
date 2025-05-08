@@ -12,17 +12,9 @@
 
 static void extract_name_command(char *arg, char **name, char **command)
 {
-    int i = 0;
-
     *name = NULL;
     *command = NULL;
-    while (arg[i] != '\0' && arg[i] != '=')
-        i++;
-    if (arg[i] == '=') {
-        arg[i] = '\0';
-        *name = arg;
-        *command = &arg[i + 1];
-    }
+    *name = arg;
 }
 
 int process_name_command_arg(char *arg, alias_t *aliases)
@@ -44,15 +36,8 @@ void display_single_alias(char *alias_name, alias_t *aliases)
     char *command = get_alias_command(aliases, alias_name);
 
     if (command) {
-        printv("alias ", 1);
-        printv(alias_name, 1);
-        printv("='", 1);
         printv(command, 1);
-        printv("'\n", 1);
-    } else {
-        printv("alias: ", 2);
-        printv(alias_name, 2);
-        printv(" not found\n", 2);
+        printv("\n", 1);
     }
 }
 

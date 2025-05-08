@@ -10,104 +10,87 @@
 #include "my.h"
 #include "workspace.h"
 
-static char *extract_name(char *arg, char *equals)
+static char *extract_single_quoted_arg(char *arg)
 {
-    int name_len = equals - arg;
-    char *name = malloc(name_len + 1);
+    char *command = NULL;
 
-    if (!name)
-        return NULL;
-    strncpy(name, arg, name_len);
-    name[name_len] = '\0';
-    return name;
+    if (arg[0] == '"' && arg[strlen(arg) - 1] == '"') {
+        command = my_strdup(arg + 1);
+        if (!command)
+            return NULL;
+        command[strlen(command) - 1] = '\0';
+        return command;
+    }
+    return NULL;
 }
 
-static char *build_command_with_equals(char **args, char *cmd_start)
+static int calculate_command_length(char **args, int start_idx)
 {
-    int cmd_len = strlen(cmd_start) + 1;
-    char *command = NULL;
-    int i = 0;
+    int total_len = 0;
+    int i;
 
-    for (i = 2; args[i]; i++)
-        cmd_len += strlen(args[i]) + 1;
-    command = malloc(cmd_len);
-    if (!command)
-        return NULL;
-    strcpy(command, cmd_start);
-    for (i = 2; args[i]; i++) {
+    for (i = start_idx; args[i]; i++) {
+        total_len += strlen(args[i]) + 1;
+    }
+    return total_len;
+}
+
+static void append_first_argument(char *command, char *first_arg)
+{
+    if (first_arg[0] == '"')
+        strcat(command, first_arg + 1);
+    else
+        strcat(command, first_arg);
+}
+
+static void append_remaining_args(char *command, char **args, int start_idx)
+{
+    int i;
+
+    for (i = start_idx + 1; args[i]; i++) {
         strcat(command, " ");
-        strcat(command, args[i]);
+        if (!args[i + 1] && args[i][strlen(args[i]) - 1] == '"') {
+            strncat(command, args[i], strlen(args[i]) - 1);
+        } else {
+            strcat(command, args[i]);
+        }
     }
-    return command;
 }
 
-static int handle_alias_with_equals(char **args, alias_t *aliases)
+static char *extract_quoted_command(char **args, int start_idx)
 {
-    char *equals = strchr(args[1], '=');
-    char *name = extract_name(args[1], equals);
-    char *cmd_start = equals + 1;
     char *command = NULL;
+    int total_len;
 
-    if (!name)
-        return 84;
-    command = build_command_with_equals(args, cmd_start);
-    if (!command) {
-        free(name);
-        return 84;
-    }
-    add_alias(aliases, name, command);
-    free(name);
-    free(command);
-    return 0;
-}
-
-static char *build_command_without_equals(char **args)
-{
-    int cmd_len = 0;
-    char *command = NULL;
-    int i = 0;
-
-    for (i = 2; args[i]; i++)
-        cmd_len += strlen(args[i]) + 1;
-    command = malloc(cmd_len);
+    command = extract_single_quoted_arg(args[start_idx]);
+    if (command)
+        return command;
+    total_len = calculate_command_length(args, start_idx);
+    command = malloc(total_len + 1);
     if (!command)
         return NULL;
     command[0] = '\0';
-    for (i = 2; args[i]; i++) {
-        if (i > 2)
-            strcat(command, " ");
-        strcat(command, args[i]);
-    }
+    append_first_argument(command, args[start_idx]);
+    append_remaining_args(command, args, start_idx);
     return command;
-}
-
-static int handle_alias_without_equals(char **args, alias_t *aliases)
-{
-    char *name = args[1];
-    char *command = build_command_without_equals(args);
-
-    if (!command)
-        return 84;
-    add_alias(aliases, name, command);
-    free(command);
-    return 0;
 }
 
 int handle_alias_command(char **args, alias_t *aliases)
 {
-    char *equals = NULL;
+    char *command = NULL;
 
     if (!args[1]) {
         display_aliases(aliases);
         return 0;
     }
-    equals = strchr(args[1], '=');
-    if (!args[2] && !equals) {
+    if (!args[2]) {
         display_single_alias(args[1], aliases);
         return 0;
     }
-    if (equals)
-        return handle_alias_with_equals(args, aliases);
-    else
-        return handle_alias_without_equals(args, aliases);
+    command = extract_quoted_command(args, 2);
+    if (!command)
+        return 84;
+    add_alias(aliases, args[1], command);
+    free(command);
+    return 0;
 }
