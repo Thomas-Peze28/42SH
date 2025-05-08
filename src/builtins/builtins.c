@@ -24,10 +24,11 @@ static void remove_newlines(char **warray, int i)
     }
 }
 
-static int handle_builtin_commands(char **warray, char ***env)
+static int handle_builtin_commands(char **warray,
+    char ***env, history_t *history)
 {
-    for (int i = 0; warray[i] != NULL; i++)
-        remove_newlines(warray, i);
+    if (handle_history_command(warray, history))
+        return 0;
     if (my_strcmp(warray[0], "setenv") || my_strcmp(warray[0], "unsetenv"))
         return func_setenv_unsetenv(warray, env);
     if (my_strcmp(warray[0], "cd") && my_strlen(warray[0]) <= 2) {
@@ -47,13 +48,15 @@ static int handle_builtin_commands(char **warray, char ***env)
     return -1;
 }
 
-int gest_comm(char **warray, char ***env)
+int gest_comm(char **warray, char ***env, history_t *history)
 {
     int ret;
 
     if (warray == NULL || warray[0] == NULL || my_strcmp(warray[0], "\n"))
         return 0;
-    ret = handle_builtin_commands(warray, env);
+    for (int i = 0; warray[i] != NULL; i++)
+        remove_newlines(warray, i);
+    ret = handle_builtin_commands(warray, env, history);
     if (ret != -1)
         return ret;
     return process_env_command(*env, warray);

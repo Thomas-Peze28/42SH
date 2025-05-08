@@ -29,12 +29,13 @@ int is_exit(char *str)
     return 1;
 }
 
-int handle_exit(char *line, char **warray, char ***env)
+int handle_exit(char *line, char **warray, char ***env, history_t *history)
 {
     for (int i = 0; warray[i] != NULL; i++) {
         if (is_exit(warray[i])) {
             free_all(0, line, warray);
             printv("exit\n", 2);
+            free_history(history);
             free_env(*env);
             exit(0);
         }
