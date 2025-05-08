@@ -6,7 +6,7 @@
 ##
 
 TEST	=	unit_tests
-NAME	=	mysh
+NAME	=	42sh
 OBJ_DIR	=	obj
 SRC	=	\
 		src/builtins/builtins.c \
