@@ -43,7 +43,7 @@ static void handle_history_up(char *input,
     move(max_y - 1, 2 + *pos);
 }
 
-static void handle_history_down(char *input,
+static int handle_history_down(char *input,
     int *pos, int *hist_idx, history_t *history)
 {
     int max_x;
@@ -61,6 +61,7 @@ static void handle_history_down(char *input,
         *pos = 0;
         print_input_line(input, max_y);
     }
+    return 1;
 }
 
 static int handle_backspace(char *input, int *pos, int max_y)
@@ -106,13 +107,14 @@ static int process_key_event(char *input,
         handle_history_up(input, pos, hist_idx, history);
         return 1;
     }
-    if (ch == KEY_DOWN && history && history->count > 0) {
-        handle_history_down(input, pos, hist_idx, history);
+    if (ch == KEY_DOWN && history && history->count > 0)
+        return handle_history_down(input, pos, hist_idx, history);
+    if (ch == KEY_BACKSPACE) {
+        handle_backspace(input, pos, max[0]);
         return 1;
     }
-    if (ch == KEY_BACKSPACE || ch == 127 || ch == 8) {
-        handle_backspace(input, pos, max[0]);
-    }
+    if (ch == KEY_LEFT || ch == KEY_RIGHT)
+        return 1;
     return handle_input_char(ch, input, pos, 1024);
 }
 
