@@ -36,6 +36,18 @@ typedef struct redirection_s {
     int original_fd;
 } redirection_t;
 
+typedef struct history_s {
+    char **commands;
+    int count;
+    int capacity;
+} history_t;
+
+history_t *init_history(int capacity);
+void add_to_history(history_t *history, char *command);
+void display_history(history_t *history);
+void free_history(history_t *history);
+int handle_history_command(char **warray, history_t *history);
+
 void free_env(char **env);
 int free_all(int ret_code, char *line, char **warray);
 void free_divise_path(char **paths);
@@ -50,9 +62,9 @@ int try_exec_command(char *dir, char **command, char **env);
 char **func_setenv(char **warray, char **env, int len_warray);
 int change_dir_env(char ***env, char *oldpwd);
 char **func_unsetenv(char **warray, char **env, int len_warray);
-int handle_exit(char *line, char **warray, char ***env);
+int handle_exit(char *line, char **warray, char ***env, history_t *history);
 int execute_piped_commands(char *warray, char ***env);
-int gest_comm(char **warray, char ***env);
+int gest_comm(char **warray, char ***env, history_t *history);
 
 void free_list_commands(char ***list_commands);
 int verif_pip(char **warray, int nb_pipe);
