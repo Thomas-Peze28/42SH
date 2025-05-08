@@ -1,3 +1,6 @@
 *.o
 mysh
 42sh
+*.a
+.vscode
+segfault

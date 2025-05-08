@@ -1,0 +1,134 @@
+0: echo | cat -e
+0: echo "" | cat -e
+0: echo " " | cat -e
+0: echo -n | cat -e
+0: echo -e "a\nb\nc" | cat -e
+0: ls | cat -e
+0: ls -l | cat -e
+0: ls -a | cat -e
+0: ls -la | cat -e
+0: ls /tmp | cat -e
+0: pwd | cat -e
+0: whoami | cat -e
+0: id | cat -e
+0: date | cat -e
+0: uname -a | cat -e
+0: true | cat -e
+1: false | cat -e
+1: ls /doesnotexist | cat -e
+1: cat /doesnotexist | cat -e
+2: grep pattern /doesnotexist | cat -e
+0: echo "foo" | grep foo | cat -e
+1: echo "foo" | grep bar | cat -e
+0: echo "foo bar" | cut -d' ' -f2 | cat -e
+0: echo "foo" | tr a-z A-Z | cat -e
+0: echo "foo" | rev | cat -e
+0: echo "foo" | wc -c | cat -e
+0: seq 1 10 | head -n 5 | cat -e
+0: seq 1 10 | tail -n 3 | cat -e
+0: echo "foo" > /tmp/testfile && cat /tmp/testfile | cat -e
+0: rm -f /tmp/testfile | cat -e
+0: touch /tmp/testfile | cat -e
+0: rm -f /tmp/testfile | cat -e
+0: mkdir /tmp/testdir | cat -e
+0: rmdir /tmp/testdir | cat -e
+0: echo "foo" >> /tmp/testfile | cat -e
+0: cat < /dev/null | cat -e
+0: echo "foo" | cat | cat | cat -e
+0: echo "foo" | (cat; cat) | cat -e
+0: echo "foo" | tee /tmp/testfile | cat -e
+0: echo "foo" | tee /tmp/testfile | tee /tmp/testfile2 | cat -e
+0: rm -f /tmp/testfile /tmp/testfile2 | cat -e
+0: echo "foo" | sed 's/foo/bar/' | cat -e
+0: echo "foo" | awk '{print $1}' | cat -e
+0: echo "foo bar" | awk '{print $2}' | cat -e
+0: echo "foo" | sort | cat -e
+0: echo "foo" | uniq | cat -e
+0: echo "foo" | xargs echo | cat -e
+0: echo "foo" | xargs -n1 echo | cat -e
+0: echo "foo" | xargs -n2 echo | cat -e
+0: echo "foo" | xargs -n1 | cat -e
+0: echo "foo" | xargs | cat -e
+0: echo "foo" | xargs -0 | cat -e
+0: echo "foo" | xargs -I{} echo {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
+0: seq 1 1000 | grep 5 | sort -n | uniq | head -n 10 | cat -e
+0: yes "foo bar" | head -n 100 | grep bar | wc -l | cat -e
+0: echo "a b c d e f g" | tr ' ' '\n' | sort | uniq | paste -sd, - | cat -e
+0: seq 1 10 | awk '{print $1*2}' | paste -sd+ - | bc | cat -e
+0: echo -e "foo\nbar\nbaz" | tee /tmp/testfile | grep ba | sort | cat -e
+0: cat /etc/passwd | cut -d: -f1 | sort | uniq | head -n 5 | cat -e
+0: find /tmp -type f | grep testfile | xargs rm -f | cat -e
+0: echo "foo" | tee >(cat -e) >(cat -e) | cat -e
+127: ech "foo" | cat -e
+127: ls -z | cat -e
+127: grep | cat -e
+127: | cat -e
+127: echo "foo" | | cat -e
+127: echo "foo" | grep | sort | | cat -e
+127: echo "foo" | grep -z | cat -e
+127: cat /dev/null | grep | cat -e
+127: echo "foo" | tr | cat -e
+127: echo "foo" | awk | cat -e
+127: echo "foo" | sed | cat -e
+127: echo "foo" | cut | cat -e
+127: echo "foo" | xargs -Q | cat -e
+127: echo "foo" | xargs -I | cat -e
+127: echo "foo" | xargs -n | cat -e
+127: echo "foo" | xargs -0 -n | cat -e
+127: echo "foo" | xargs -I{} echo | cat -e
+127: echo "foo" | xargs -I{} | cat -e
+127: echo "foo" | xargs -I{} echo {} | | cat -e
+1: echo "foo" > /root/forbiddenfile | cat -e
+1: cat < /doesnotexist | cat -e
+1: cat > /doesnotexist/forbidden | cat -e
+1: echo "foo" >> /doesnotexist/forbidden | cat -e
+0: echo | grep "" | cat -e
+0: echo -n | grep "" | cat -e
+0: echo "foo" | grep "" | grep "" | grep "" | cat -e
+0: echo "foo" | tr -d "foo" | cat -e
+0: echo "foo" | tr -d "bar" | cat -e
+0: echo "foo" | rev | rev | rev | cat -e
+0: echo "foo" | sort | sort | sort | cat -e
+0: echo "foo" | uniq | uniq | uniq | cat -e
+0: echo "foo" | xargs echo | xargs echo | xargs echo | cat -e

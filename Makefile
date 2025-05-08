@@ -1,74 +1,87 @@
 ##
-## EPITECH PROJECT, 2025
-## fozzbazz
+## EPITECH PROJECT, 2024
+## makefile for 42ch
 ## File description:
-## Makefile
+## makefile for 42ch
 ##
 
-NAME	= 42sh
-
-SRC	=	src/mysh.c\
-		src/lib/my_str_to_word_array.c\
-		src/builtin/my_env.c\
-		src/builtin/my_exit.c\
-		src/builtin/my_getenv.c\
-		src/lib/my_strcat.c\
-		src/my_split.c\
-		src/my_free.c\
-		src/builtin/my_cd.c\
-		src/builtin/my_setenv.c\
-		src/my_clist.c\
-		src/lib/my_strcpy.c\
-		src/my_list_to_clist.c\
-		src/my_clist_get_value.c\
-		src/execute_commands.c\
-		src/my_clist_len.c\
-		src/shell_loop.c\
-		src/my_print_dir.c\
-		src/my_commands.c\
-		src/lib/my_strcmp.c\
-		src/search_commands.c\
-		src/file_reader.c\
-		src/clist_delete.c\
-		src/builtin/my_unsetenv.c\
-		src/my_stdfd.c\
-		src/lib/my_strsplit.c\
-		src/commands_scanner.c\
-		src/redirection.c\
-		src/my_42.c \
-		src/init_ncurse.c \
+TEST	=	unit_tests
+NAME	=	42sh
+OBJ_DIR	=	obj
+SRC	=	\
+		src/builtins/builtins.c \
+		src/builtins/func_cd.c \
+		src/builtins/func_env.c \
+		src/builtins/func_setenv_unsetenv.c \
+		src/builtins/handle_exit.c \
+		src/builtins/my_which.c \
+		src/pipe_n_redirect/child_exec_process.c \
+		src/pipe_n_redirect/pip_utils.c \
+		src/pipe_n_redirect/pipe_handling.c \
+		src/pipe_n_redirect/redirection.c \
+		src/pipe_n_redirect/run_commands_pipe.c \
+		src/utils/change_dir.c \
+		src/utils/check_empty_commands.c \
+		src/utils/div_path.c \
+		src/utils/easter.c \
+		src/utils/free.c \
+		src/utils/search_command.c \
 		src/ncurse.c \
-		src/eof.c \
-		src/builtin/my_which.c \
+		src/history/manage_history.c \
+		src/ncurse_keys.c \
 
-OBJ	= $(SRC:.c=.o)
+MAIN	=	src/main.c
+OBJ	=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)
+MAIN_OBJ=	$(MAIN:src/%.c=$(OBJ_DIR)/%.o)
+CFLAGS	=	-Wall -Wextra -L$(LIB_DIR) -l:$(LIB_NAME).a -I./include -lncurses
+ILFLAGS	=	-I./lib
+LIB_DIR	=	lib
+LIB_NAME	=	libmy
+LIB_PATH	=	$(LIB_DIR)/lib$(LIB_NAME).a
 
-CC	= gcc
+GREEN	=	\033[0;32m
+YELLOW	=	\033[1;33m
+RED	=	\033[0;31m
+BLUE	=	\033[1;34m
+NC	=	\033[0m
 
-INCLUDE_DIR = include
+all: $(LIB_PATH) create_dirs $(NAME)
+	@echo -e "$(GREEN)[OK] Compilation terminée.$(NC)"
 
-CFLAGS  = -I$(INCLUDE_DIR) -Wall -Wextra -lncurses
+create_dirs:
+	@mkdir -p $(OBJ_DIR)/builtins
+	@mkdir -p $(OBJ_DIR)/pipe_n_redirect
+	@mkdir -p $(OBJ_DIR)/utils
+	@mkdir -p $(OBJ_DIR)/history
 
-LFLAGS	= -I include
+$(NAME): $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
+	@echo -e "$(BLUE)[INFO] Edition des liens...$(NC)"
+	gcc -o $(NAME) $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
 
-all: $(NAME)
+$(OBJ_DIR)/%.o: src/%.c
+	@echo -e "$(YELLOW)[COMP] $<$(NC)"
+	gcc $(CFLAGS) $(ILFLAGS) -c $< -o $@
 
-$(NAME):	$(OBJ)
-	gcc -o $(NAME) $(OBJ) $(CFLAGS)
-
-debug:
-	$(CC) -c $(SRC) $(CFLAGS) -g
-	@mv $(notdir $(OBJ)) src
-	$(CC) -o $(NAME)_debug $(OBJ) $(CFLAGS) -g
+$(LIB_PATH):
+	@echo -e "$(BLUE)[INFO] Compilation de la librairie...$(NC)"
+	$(MAKE) -C $(LIB_DIR)
 
 clean:
-	@rm -f $(OBJ)
+	@echo -e "$(RED)[CLEAN] Suppression des fichiers objets...$(NC)"
+	$(MAKE) -C $(LIB_DIR) clean
+	rm -rf $(OBJ_DIR)
+	rm -f *.gcno
+	rm -f *.gcda
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f $(NAME)_debug
+	@echo -e "$(RED)[FCLEAN] Suppression des binaires...$(NC)"
+	$(MAKE) -C $(LIB_DIR) fclean
+	rm -f $(NAME)
+	rm -f $(TEST)
 
 re: fclean all
 
-run: all
-	./$(NAME)
+debug: $(LIB_PATH) create_dirs $(OBJ) $(MAIN_OBJ)
+	@echo -e "$(BLUE)[DEBUG] Compilation avec debug...$(NC)"
+	gcc -o $(NAME) -g $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
+	valgrind --leak-check=full --show-leak-kinds=all ./mysh
