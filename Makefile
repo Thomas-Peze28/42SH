@@ -6,7 +6,7 @@
 ##
 
 TEST	=	unit_tests
-NAME	=	mysh
+NAME	=	42sh
 OBJ_DIR	=	obj
 SRC	=	\
 		src/builtins/builtins.c \
@@ -29,8 +29,9 @@ SRC	=	\
 		src/ncurse.c \
 		src/history/manage_history.c \
 		src/alias/manage_alias.c \
-        src/alias/alias_commands.c \
+    src/alias/alias_commands.c \
 		src/alias/free_aliases.c \
+		src/ncurse_keys.c \
 
 MAIN	=	src/main.c
 OBJ	=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)

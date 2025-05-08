@@ -70,6 +70,7 @@ char *execve_and_get_stdout(char *path, char **argv, char **envp)
     int pipefd[2];
     pid_t pid;
     char *output = NULL;
+    int status = 0;
 
     if (!isatty(0) || !isatty(1)) {
         execve(path, argv, envp);
@@ -82,7 +83,8 @@ char *execve_and_get_stdout(char *path, char **argv, char **envp)
     close(pipefd[1]);
     output = read_from_pipe(pipefd[0]);
     close(pipefd[0]);
-    waitpid(pid, NULL, 0);
+    waitpid(pid, &status, 0);
+    check_status_code(status);
     return output;
 }
 
@@ -106,30 +108,7 @@ void printv(char *text, int status)
     }
 }
 
-static int read_input_ncurses(char *input, int size)
-{
-    int result = 0;
-    int max_y;
-    int max_x;
-
-    getmaxyx(stdscr, max_y, max_x);
-    move(max_y - 1, 0);
-    clrtoeol();
-    printv("> ", 1);
-    echo();
-    result = getnstr(input, size - 1);
-    noecho();
-    if (result == ERR) {
-        input[0] = '\0';
-        return -1;
-    }
-    if (input[0] == '\0') {
-        refresh();
-    }
-    return 0;
-}
-
-int get_line_ncurses(char **buffer)
+int get_line_ncurses(char **buffer, history_t *history)
 {
     const int NCURSES_MAX_INPUT = 1024;
     char input[NCURSES_MAX_INPUT];
@@ -140,7 +119,7 @@ int get_line_ncurses(char **buffer)
         free(*buffer);
         *buffer = NULL;
     }
-    if (read_input_ncurses(input, NCURSES_MAX_INPUT) == -1) {
+    if (read_input_ncurses(input, NCURSES_MAX_INPUT, history) == -1) {
         len = 0;
     } else {
         len = strlen(input);
