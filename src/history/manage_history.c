@@ -77,7 +77,14 @@ static void print_history_line_tty(int i, int count, char *command)
 {
     for (int j = my_nbrlen(i + 1); j < my_nbrlen(count); j++)
         printw(" ");
-    printw("%d   %s\n", i + 1, command);
+    attron(COLOR_PAIR(1) | A_BOLD);
+    printw("%d", i + 1);
+    attroff(COLOR_PAIR(1) | A_BOLD);
+    printw("   ");
+    attron(COLOR_PAIR(2));
+    printw("%s", command);
+    attroff(COLOR_PAIR(2));
+    printw("\n");
     refresh();
 }
 
