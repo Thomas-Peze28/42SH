@@ -41,6 +41,8 @@ int process_env_command(char **env, char **warray)
         return 84;
     for (; env[i] != NULL; i++) {
         result = verify_path(env, warray, i);
+        if (result != 1)
+            return result;
         if (result == 0)
             return 0;
         if (result == 84)
@@ -128,6 +130,7 @@ static int verify_env_history_alias(char **env,
 int mysh(int result, char **env_original)
 {
     char **env = dup_env(env_original);
+    int prev_result = 0;
     history_t *history = init_history(100);
     alias_t *aliases = init_aliases(100);
 
@@ -135,14 +138,15 @@ int mysh(int result, char **env_original)
         return 84;
     if (!isatty(STDIN_FILENO)) {
         result = process_iteration(&env, history, aliases);
-        while (result != -1)
+        while (result != -1) {
+            prev_result = result;
             result = process_iteration(&env, history, aliases);
+        }
         free_eha(env, history, aliases);
-        return result == -1 ? 0 : result;
+        return prev_result == -1 ? 0 : prev_result;
     }
-    while (result != -1) {
+    while (result != -1)
         result = process_iteration(&env, history, aliases);
-    }
     free_eha(env, history, aliases);
     return result;
 }
