@@ -1,0 +1,1 @@
+grep -R 'TODO' . 2> errors.log

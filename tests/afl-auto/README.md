@@ -33,7 +33,7 @@ To use `afl-auto`, you can run it with or without a graphical interface, dependi
 Run the following command to start fuzzing in a headless mode:
 
 ```bash
-docker run --rm -it -v $(pwd):/src -e LUNCH_TIME=30 myecoria/epitfl:latest
+docker run --rm -it -v $(pwd):/src -e LUNCH_TIME=30 -e CC=afl-clang-fast myecoria/epitfl:latest
 ```
 
 This command mounts your current working directory (`$(pwd)`) into the container, sets the fuzzing duration to 30 minutes (`LUNCH_TIME=30`), and starts the fuzzing process.
@@ -43,7 +43,7 @@ This command mounts your current working directory (`$(pwd)`) into the container
 If you want to use a graphical interface to monitor the fuzzing process, ensure that your system supports X11 forwarding and run the following command:
 
 ```bash
-docker run --rm -it -v $(pwd):/src -e LUNCH_TIME=30 -e DISPLAY=$DISPLAY myecoria/epitfl:latest
+docker run --rm -it -v $(pwd):/src -e LUNCH_TIME=30 -e CC=afl-clang-fast -e DISPLAY=$DISPLAY myecoria/epitfl:latest
 ```
 
 This command additionally forwards the X11 display (`DISPLAY=$DISPLAY`) and mounts the X11 socket (`/tmp/.X11-unix`) to enable GUI support.

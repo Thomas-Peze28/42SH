@@ -1,0 +1,1 @@
+echo 'append' >> log.txt

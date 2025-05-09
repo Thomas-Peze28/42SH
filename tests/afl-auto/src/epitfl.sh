@@ -8,7 +8,7 @@
 ##
 
 MAKEFILE="${MAKEFILE:-Makefile}"
-OUTPUT_BINARY="fuzzed_binary"
+OUTPUT_BINARY="42sh"
 OUTPUT_MAKEFILE="Makefile.afl"
 INPUT_OPTION="${INPUT_OPTION:--m none -c 0}"
 
@@ -31,7 +31,7 @@ mkdir -p outputafl
 [ ! -d "tests/testcases" ] && mkdir -p tests/testcases
 
 # Compilation du code avec afl-clang-fast et gcov
-make -f $OUTPUT_MAKEFILE
+make re
 
 # Vérification de l'existence du binaire $OUTPUT_BINARY
 [ ! -f $OUTPUT_BINARY ] && exit 1
@@ -78,7 +78,7 @@ for instance_dir in outputafl/*; do
 done
 
 # Nettoyage des fichiers/dossiers créés pendant les tests sauf output_final
-make -f $OUTPUT_MAKEFILE fclean > /dev/null
+make fclean > /dev/null
 rm -rf $OUTPUT_BINARY > /dev/null
 rm -rf $OUTPUT_MAKEFILE > /dev/null
 rm -rf tests/testcases > /dev/null
