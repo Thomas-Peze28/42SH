@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include "my.h"
 #include "workspace.h"
+#include <stdbool.h>
+#include <ncurses.h>
+#include <unistd.h>
 
 int is_exit(char *str)
 {
@@ -29,6 +32,12 @@ int is_exit(char *str)
     return 1;
 }
 
+static void close_ncurses(bool flag)
+{
+    if (flag == true)
+        endwin();
+}
+
 int handle_exit(char **warray, char ***env,
     history_t *history, alias_t *aliases)
 {
@@ -37,6 +46,7 @@ int handle_exit(char **warray, char ***env,
             free_all(0, NULL, warray);
             printv("exit\n", 2);
             free_eha(*env, history, aliases);
+            close_ncurses(isatty(0) && isatty(1));
             exit(0);
         }
     }

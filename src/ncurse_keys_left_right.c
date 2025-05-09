@@ -6,6 +6,7 @@
 */
 
 #include <ncurses.h>
+#include <string.h>
 #include "my.h"
 
 int handle_cursor_move(int key, int pos, int len, int max_y)

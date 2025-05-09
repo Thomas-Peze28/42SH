@@ -174,5 +174,7 @@ int main(int argc, char **argv, char **env)
     if (argc != 1 || argv[1] != NULL)
         return 84;
     result = mysh(0, env);
+    if (isatty(0) && isatty(1))
+        endwin();
     return result;
 }
