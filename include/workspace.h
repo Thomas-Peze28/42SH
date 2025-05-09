@@ -42,6 +42,28 @@ typedef struct history_s {
     int capacity;
 } history_t;
 
+typedef struct alias_s {
+    char **names;
+    char **commands;
+    int count;
+    int capacity;
+} alias_t;
+
+void free_eha(char **env, history_t *history, alias_t *aliases);
+
+alias_t *init_aliases(int capacity);
+void add_alias(alias_t *aliases, char *name, char *command);
+void remove_alias(alias_t *aliases, char *name);
+char *get_alias_command(alias_t *aliases, char *name);
+void display_aliases(alias_t *aliases);
+void free_aliases(alias_t *aliases);
+int handle_alias_command(char **warray, alias_t *aliases);
+int handle_unalias_command(char **warray, alias_t *aliases);
+char **substitute_aliases(char **warray, alias_t *aliases);
+int process_name_command_arg(char *arg, alias_t *aliases);
+int create_alias_from_args(char **warray, alias_t *aliases);
+void display_single_alias(char *alias_name, alias_t *aliases);
+
 history_t *init_history(int capacity);
 void add_to_history(history_t *history, char *command);
 void display_history(history_t *history);
@@ -62,9 +84,11 @@ int try_exec_command(char *dir, char **command, char **env);
 char **func_setenv(char **warray, char **env, int len_warray);
 int change_dir_env(char ***env, char *oldpwd);
 char **func_unsetenv(char **warray, char **env, int len_warray);
-int handle_exit(char *line, char **warray, char ***env, history_t *history);
+int handle_exit(char **warray, char ***env,
+    history_t *history, alias_t *aliases);
 int execute_piped_commands(char *warray, char ***env);
-int gest_comm(char **warray, char ***env, history_t *history);
+int gest_comm(char **warray, char ***env,
+    history_t *history, alias_t *aliases);
 
 void free_list_commands(char ***list_commands);
 int verif_pip(char **warray, int nb_pipe);
