@@ -63,4 +63,6 @@ int process_env_command(char **env, char **warray);
 int my_is_alphanum(const char *str);
 int read_input_ncurses(char *input, int size, history_t *history);
 int check_status_code(int status);
+int handle_cursor_move(int key, int pos, int len, int max_y);
+int process_left_right(int ch, int *pos, char *input);
 #endif /* MY_H */

@@ -29,6 +29,7 @@ SRC	=	\
 		src/ncurse.c \
 		src/history/manage_history.c \
 		src/ncurse_keys.c \
+		src/ncurse_keys_left_right.c \
 
 MAIN	=	src/main.c
 OBJ	=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)

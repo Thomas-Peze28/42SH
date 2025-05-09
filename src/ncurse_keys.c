@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** minishell1
+** 42sh
 ** File description:
-** minishell1
+** 42sh
 */
 
 #include "workspace.h"
@@ -113,7 +113,7 @@ static int process_key_event(char *input,
         handle_backspace(input, pos, max[0]);
         return 1;
     }
-    if (ch == KEY_LEFT || ch == KEY_RIGHT)
+    if (process_left_right(ch, pos, input) == 1)
         return 1;
     return handle_input_char(ch, input, pos, 1024);
 }
