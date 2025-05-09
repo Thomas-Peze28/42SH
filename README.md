@@ -2,31 +2,22 @@
 
 ---
 
-### Nom du module: module_name
-### Deadline: date
-### Nom du binaire: binary_name
+### Nom du module: B-PSU-200
+### Deadline: 09/05/2025
+### Nom du binaire: 42sh
 
 ---
 
 ## Description
 
-**nom_du_projet** description rapide et simple du projet.  
+**42sh** Le projet consiste à reproduire un shell t'elle que TCSH
 
-- fonctionnalités_n1
-- fonctionnalités_n2
-- fonctionnalités_n3
-- etc
-
----
-
-## Fonctionnalités à Implémenter
-
-- :white_check_mark: fini
-- :yellow_square: pratiquement fini quelques verifications à faire
-- :orange_square: fonctionne avec plusieurs problemes quand meme
-- :red_square: segmentation fault, crash, etc
-- :blue_square: coding_style
-- :black_large_square: pas fait
+- exécute des commandes linux
+- posséde un historique de commande
+- possede la commande 42sh
+- possede les allias
+- possede les pipes
+- possede les redirections
 
 ---
 
@@ -38,7 +29,7 @@ Pour utiliser le programme, compilez-le avec `Makefile`, puis exécutez la comma
 make
 ./nom_du_binaire params1 params2 ...
 ```
-OR
+OU
 ```bash
 make run
 ```
@@ -47,7 +38,11 @@ Pour tester le programme, compilez-le avec le 'Makefile, puis exécutez la comma
 
 ```bash
 make tests_run
-gcovr --exclude ./nom_du_binaire params1 params2 ...
+./tests/run_tests.sh
+```
+OU
+```bash
+docker run --rm -it -v $(pwd):/src -e CC=afl-clang-fast -e LUNCH_TIME=30 -e DISPLAY=$DISPLAY myecoria/epitfl:latest
 ```
 
 ---
@@ -60,19 +55,15 @@ file_action [files]
 
 ## Organisations
 
-### Semaine 1
-**Lundi**
--> fonctionnalités1
+### Semaine 2
+-> ajout du Minishell 2 de Celestin
 
-**Mardi**
--> fonctionnalités2
+### Semaine 3
+-> refonte du projet avec de nouvelle base et le Minishell 2 de étienne
 
-**Mercredi**
--> fonctionnalités3
+-> ajout de la ncurse
 
-**Jeudi**
--> fonctionnalités4
+-> ajout des allias, fix TA, ajout de historique, fleches haut et bas, fix ncurse
 
-**Vendredi**
--> fonctionnalités5
+-> ajout des flèches droite et gauche, test, fix error
 
