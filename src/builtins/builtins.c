@@ -52,8 +52,10 @@ static int handle_utility_commands(char **warray, char ***env)
 {
     if (my_strcmp(warray[0], "which"))
         return my_which(warray, *env);
-    if (my_strcmp(warray[0], "clear"))
-        return clear();
+    if (my_strcmp(warray[0], "clear")) {
+        clear();
+        return print_42sh_ascii();
+    }
     if (my_strcmp(warray[0], "42sh"))
         return print_42sh_ascii();
     return -1;
