@@ -14,10 +14,10 @@
 
 - exécute des commandes linux
 - posséde un historique de commande
-- possede la commande 42sh
-- possede les allias
-- possede les pipes
-- possede les redirections
+- posséde la commande 42sh
+- posséde les allias
+- posséde les pipes
+- posséde les redirections
 
 ---
 
@@ -27,17 +27,13 @@ Pour utiliser le programme, compilez-le avec `Makefile`, puis exécutez la comma
 
 ```bash
 make
-./nom_du_binaire params1 params2 ...
-```
-OU
-```bash
-make run
+./42sh
 ```
 
 Pour tester le programme, compilez-le avec le 'Makefile, puis exécutez la commande suivante dans le terminal :
 
 ```bash
-make tests_run
+make
 ./tests/run_tests.sh
 ```
 OU
@@ -49,7 +45,7 @@ docker run --rm -it -v $(pwd):/src -e CC=afl-clang-fast -e LUNCH_TIME=30 -e DISP
 
 ## Norme de commit
 
-file_action [files]
+[+]/[-]/[~] explication des modifications
 
 ---
 
@@ -59,7 +55,7 @@ file_action [files]
 -> ajout du Minishell 2 de Celestin
 
 ### Semaine 3
--> refonte du projet avec de nouvelle base et le Minishell 2 de étienne
+-> refonte du projet avec de nouvelle base et le Minishell 2 de Etienne
 
 -> ajout de la ncurse
 
@@ -67,3 +63,15 @@ file_action [files]
 
 -> ajout des flèches droite et gauche, test, fix error
 
+---
+
+## Colaborateur
+-> Etienne Pouille
+
+-> Pierric Buchez
+
+-> Maximilien Lachevre--Leconte
+
+-> Celestin Bailly
+
+-> Thomas Peze
