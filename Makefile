@@ -29,7 +29,7 @@ SRC	=	\
 		src/ncurse.c \
 		src/history/manage_history.c \
 		src/alias/manage_alias.c \
-    src/alias/alias_commands.c \
+		src/alias/alias_commands.c \
 		src/alias/free_aliases.c \
 		src/alias/create_alias.c \
 		src/alias/handle_alias.c \
@@ -44,6 +44,8 @@ ILFLAGS	=	-I./lib
 LIB_DIR	=	lib
 LIB_NAME	=	libmy
 LIB_PATH	=	$(LIB_DIR)/lib$(LIB_NAME).a
+
+CC      ?= gcc
 
 GREEN	=	\033[0;32m
 YELLOW	=	\033[1;33m
@@ -63,11 +65,11 @@ create_dirs:
 
 $(NAME): $(LIB_PATH) $(OBJ) $(MAIN_OBJ)
 	@echo -e "$(BLUE)[INFO] Edition des liens...$(NC)"
-	gcc -o $(NAME) $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
+	$(CC) -o $(NAME) $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
 
 $(OBJ_DIR)/%.o: src/%.c
 	@echo -e "$(YELLOW)[COMP] $<$(NC)"
-	gcc $(CFLAGS) $(ILFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(ILFLAGS) -c $< -o $@
 
 $(LIB_PATH):
 	@echo -e "$(BLUE)[INFO] Compilation de la librairie...$(NC)"
@@ -90,5 +92,5 @@ re: fclean all
 
 debug: $(LIB_PATH) create_dirs $(OBJ) $(MAIN_OBJ)
 	@echo -e "$(BLUE)[DEBUG] Compilation avec debug...$(NC)"
-	gcc -o $(NAME) -g $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
+	$(CC) -o $(NAME) -g $(OBJ) $(MAIN_OBJ) $(CFLAGS) $(ILFLAGS)
 	valgrind --leak-check=full --show-leak-kinds=all ./mysh

@@ -93,7 +93,6 @@
 0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
 0: echo "foo" | xargs -I{} echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} | cat -e
 0: seq 1 1000 | grep 5 | sort -n | uniq | head -n 10 | cat -e
-0: yes "foo bar" | head -n 100 | grep bar | wc -l | cat -e
 0: echo "a b c d e f g" | tr ' ' '\n' | sort | uniq | paste -sd, - | cat -e
 0: seq 1 10 | awk '{print $1*2}' | paste -sd+ - | bc | cat -e
 0: echo -e "foo\nbar\nbaz" | tee /tmp/testfile | grep ba | sort | cat -e
