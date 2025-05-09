@@ -149,5 +149,5 @@ int search_command(char **path, char **command, char **env)
     cleanup_redirection(&redir);
     printv(command[0], 2);
     printv(": Command not found.\n", 2);
-    return 0;
+    return ret;
 }
