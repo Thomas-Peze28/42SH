@@ -8,13 +8,13 @@ Ce dépôt contient un shell capable d'exécuter des commandes, de gérer l'hist
 ## Fonctionnalités principales ✨
 
 - 🔧 Exécution de commandes externes via PATH
-- 📦 Builtins : `cd`, `env`, `setenv`, `unsetenv`, `exit`, `which` (implémentations dans `src/builtins/`)
-- 🔁 Gestion des alias (création, substitution) (`src/alias/`)
-- 📜 Historique des commandes avec navigation (flèches, ajout automatique) (`src/history/`)
+- 📦 Builtins : `cd`, `env`, `setenv`, `unsetenv`, `exit`, `which`
+- 🔁 Gestion des alias (création, substitution)
+- 📜 Historique des commandes avec navigation (flèches, ajout automatique)
 - ⌨️ Édition de ligne interactive en mode terminal via ncurses (support des touches gauche/droite/haut/bas)
-- 🔀 Prise en charge des pipes (|) et des redirections (`>`, `<`, `>>`) (`src/pipe_n_redirect/`)
+- 🔀 Prise en charge des pipes (`|`) et des redirections (`>`, `<`, `>>`)
 - ⚙️ Support des commandes séparées par `;`
-- 📡 Mode non-interactif (lecture depuis stdin)
+- 📡 Mode non-interactif (lecture depuis STDIN)
 
 ## Prérequis 🧾
 
