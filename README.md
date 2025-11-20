@@ -1,77 +1,126 @@
-# 42sh
+# 42sh 🚀
 
----
+## Présentation 📝
 
-### Nom du module: B-PSU-200
-### Deadline: 09/05/2025
-### Nom du binaire: 42sh
+**42sh** est une implémentation pédagogique d'un shell Unix (inspiré de tcsh) réalisée dans le cadre d'un projet EPITECH.
+Ce dépôt contient un shell capable d'exécuter des commandes, de gérer l'historique et les alias, de supporter les pipes et les redirections, et d'offrir une édition de ligne améliorée via ncurses.
 
----
+## Fonctionnalités principales ✨
 
-## Description
+- 🔧 Exécution de commandes externes via PATH
+- 📦 Builtins : `cd`, `env`, `setenv`, `unsetenv`, `exit`, `which` (implémentations dans `src/builtins/`)
+- 🔁 Gestion des alias (création, substitution) (`src/alias/`)
+- 📜 Historique des commandes avec navigation (flèches, ajout automatique) (`src/history/`)
+- ⌨️ Édition de ligne interactive en mode terminal via ncurses (support des touches gauche/droite/haut/bas)
+- 🔀 Prise en charge des pipes (|) et des redirections (`>`, `<`, `>>`) (`src/pipe_n_redirect/`)
+- ⚙️ Support des commandes séparées par `;`
+- 📡 Mode non-interactif (lecture depuis stdin)
 
-**42sh** Le projet consiste à reproduire un shell t'elle que TCSH
+## Prérequis 🧾
 
-- exécute des commandes linux
-- posséde un historique de commande
-- posséde la commande 42sh
-- posséde les allias
-- posséde les pipes
-- posséde les redirections
+- Un compilateur C compatible (gcc/clang)
+- La bibliothèque de développement ncurses (package `libncurses-dev` ou équivalent)
+- Make
 
----
+Sur Debian/Ubuntu :
 
-## Utilisation
+```bash
+sudo apt-get update
+sudo apt-get install build-essential libncurses-dev
+```
 
-Pour utiliser le programme, compilez-le avec `Makefile`, puis exécutez la commande suivante dans le terminal :  
+## Compilation 🛠️
+
+La compilation se fait avec le Makefile fourni. Depuis la racine du dépôt :
 
 ```bash
 make
+```
+
+Le binaire produit s'appelle `42sh` (variable `NAME` dans le Makefile).
+
+Commandes utiles :
+
+- 🔨 `make` : compile la librairie `libmy` puis le shell
+- 🧹 `make clean` / `make fclean` : nettoyage des objets/binaires
+- 🐞 `make debug` : compilation en debug et exécution sous valgrind (script de debug prévu)
+
+## Exécution ▶️
+
+En mode interactif (terminal) :
+
+```bash
 ./42sh
 ```
 
-Pour tester le programme, compilez-le avec le 'Makefile, puis exécutez la commande suivante dans le terminal :
+En mode non-interactif (par exemple à partir d'un script) :
+
+```bash
+echo "ls -l | grep src" | ./42sh
+```
+
+## Exemple d'utilisation 🎯
+
+L'exemple ci-dessous montre une session de démarrage du shell avec l'entête (tel qu'affiché par la fonction `print_42sh_ascii()`), puis quelques commandes simples. Cet affichage est donné à titre d'exemple : l'entête exacte peut varier selon l'implémentation.
+
+```bash
+$ ./42sh
+
+"                    .-')   ('-. .-."
+"                   ( OO ).( OO )  /"
+"    .---.  .-----.(_)---\\_,--. ,--."
+"   / .  | / ,-.   /    _ ||  | |  |"
+"  / /|  | '-'  |  \\  :` `.|   .|  |"
+" / / |  |_   .'  / '..`''.|       |"
+"/  '-'    |.'  /__.-._)   |  .-.  |"
+"`----|  |-|       \\       |  | |  |"
+"     `--' `-------'`-----'`--' `--'"
+
+user@machine:~$ echo "Bonjour 42sh"
+Bonjour 42sh
+
+user@machine:~$ ls -1 | grep src
+src
+
+user@machine:~$ exit
+```
+
+## Utilisation et exemples 🧪
+
+- ▶️ Lancer une commande externe : `ls -la /tmp`
+- 🔀 Chainer des commandes avec pipe : `ps aux | grep nginx`
+- 📤 Rediriger la sortie : `echo hello > file.txt`
+- 🔁 Exécuter plusieurs commandes : `echo a; echo b; ls`
+- 🏷️ Alias : création/gestion via les commandes implémentées (voir `src/alias/`)
+- ⬆️⬇️ Historique : utilisez les flèches haut/bas pour naviguer
+
+## Comportement détaillé 📘
+
+- La lecture de ligne interactive utilise ncurses si le shell est attaché à un terminal (isatty).
+- Si l'entrée n'est pas un terminal (p.ex. `cat script | ./42sh`), le shell lit les commandes via stdin.
+- Les commandes séparées par `;` sont traitées séquentiellement.
+- Les alias sont substitués avant exécution (implémentation dans `src/alias/`).
+
+## Tests 🧪
+
+Le dépôt contient des scripts et des répertoires de tests (`tests/`, `testcases/`). Pour lancer la suite de tests fournie :
 
 ```bash
 make
-./tests/run_tests.sh
-```
-OU
-```bash
-docker run --rm -it -v $(pwd):/src -e CC=afl-clang-fast -e LUNCH_TIME=30 -e DISPLAY=$DISPLAY myecoria/epitfl:latest
+./tests/run_test.sh
 ```
 
----
+Il existe aussi des configurations pour fuzzing / conteneurisation dans `tests/afl-auto/`.
 
-## Norme de commit
+## Débogage 🐞
 
-[+]/[-]/[~] explication des modifications
+- `make debug` compile en debug et propose un lancement sous `valgrind` (voir Makefile).
 
----
+## Auteurs / Collaborateurs 👥
 
-## Organisations
-
-### Semaine 2
--> ajout du Minishell 2 de Celestin
-
-### Semaine 3
--> refonte du projet avec de nouvelle base et le Minishell 2 de Etienne
-
--> ajout de la ncurse
-
--> ajout des allias, fix TA, ajout de historique, fleches haut et bas, fix ncurse
-
--> ajout des flèches droite et gauche, test, fix error
+- [@Etienne Pouille](https://github.com/EtienneP-26)
+- [@Pierric Buchez](https://github.com/MyEcoria)
+- [@Thomas-Peze](https://github.com/Thomas-Peze28)
+- [@Celestin Bailly](https://github.com/maxlabinche)
 
 ---
-
-## Colaborateur
--> Etienne Pouille
-
--> Pierric Buchez
-
--> Maximilien Lachevre--Leconte
-
--> Celestin Bailly
-
--> Thomas Peze
