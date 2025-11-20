@@ -61,8 +61,6 @@ echo "ls -l | grep src" | ./42sh
 
 ## Exemple d'utilisation 🎯
 
-L'exemple ci-dessous montre une session de démarrage du shell avec l'entête (tel qu'affiché par la fonction `print_42sh_ascii()`), puis quelques commandes simples. Cet affichage est donné à titre d'exemple : l'entête exacte peut varier selon l'implémentation.
-
 ```bash
 $ ./42sh
 
